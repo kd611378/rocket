@@ -1,30 +1,62 @@
-
-<div class="toolbar" role="banner">
-  <img
-    width="40"
-    alt="Angular Logo"
-    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-  />
-  <span>Authors List</span>
-</div>
-
-<div class="content" role="main">
-  <div class="card" style="width: 18rem;" *ngFor="let x of authorList">
-    <img class="card-img-top" src="{{x.image}}" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Name: {{x.firstName}}{{x.lastName}}</h5>
-      <p class="card-text">Company: {{x.company}}</p>
-      <p class="card-text">Email: {{x.email}}</p>
-      <p class="card-text">Job Description : {{x.jobDescription}}</p>
+<header>
+  <div class="container" [ngClass]="changeOpacity ? 'dark' : 'light'">
+    <div class="logo">
+        <a href="#"><img src="data:image/png;base64,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" alt="logo"></a>
     </div>
-    <hr/>
+  <div class="navbar">
+
+    <div class="icon-bar" (click)="show()">
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
+    
+    <ul id="nav-lists" #concernedDiv>
+        <li class="close"><span (click)="hide()">×</span></li>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+    
+    </div>
   </div>
+</header>
 
-  </div>
-
-
-<div class="footer" role="footer">
-  <span>
-    @@@@@@@ All copy rights are reserved @@@@@@@ 2022
-  </span>
+<div class="main">
+  <h1>Responsive Card Author Grid</h1>
+  <ul class="cards">
+    <li class="cards-item" *ngFor="let author of authorList; let i = index; trackBy: trackById">
+      <div class="card">
+        <div class="card_image">
+          <img src="{{ author.image }}" />
+        </div>
+        <div class="card_content">
+          <h2 class="card_title">
+            {{ author.firstName }} {{ author.lastName }}
+          </h2>
+          <p class="card_text">
+            {{ author.company }} <br />
+            <strong>{{ author.jobTitle }}</strong>
+          </p>
+          <div class="show-more" (click)="hiddenItems[i] = !hiddenItems[i]">
+            <p>Additional Info 
+              <svg viewBox="0 0 34 34" aria-hidden="true" class="arrow right" [ngClass]="{'active': hiddenItems[i]}">
+                <path fill="#000000" d="M16.98 26.66L.47 10.11l1.06-1.06 15.45 15.49L32.47
+                9.09l1.06 1.06-16.55 16.51z"></path>
+                </svg>
+            </p>
+          </div>
+          <div *ngIf="hiddenItems[i]" class="extra-content">
+            <p>{{ author.jobDescription }}</p>
+            <p>{{ author.email }}</p>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>
+
+<footer class="footer">
+  <p>Made with ♡</p>
+</footer>
